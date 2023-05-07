@@ -1,7 +1,7 @@
 {
 	"expo": {
-		"name": "code-base-expo",
-		"slug": "code-base-expo",
+		"name": "expo-three-flip-menu",
+		"slug": "expo-three-flip-menu",
 		"version": "1.0.0",
 		"orientation": "portrait",
 		"icon": "./src/assets/img/appIcons/icon.png",
