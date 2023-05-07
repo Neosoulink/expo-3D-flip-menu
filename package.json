@@ -21,8 +21,10 @@
 		"@react-native-async-storage/async-storage": "1.17.11",
 		"@react-navigation/native": "6.0.6",
 		"@react-navigation/stack": "^6.3.16",
+		"@react-three/fiber": "^8.13.0",
 		"@reduxjs/toolkit": "1.7.1",
 		"expo": "48.0.0",
+		"expo-gl": "~12.4.0",
 		"expo-navigation-bar": "^2.1.1",
 		"expo-splash-screen": "~0.18.2",
 		"expo-status-bar": "~1.4.4",
@@ -36,7 +38,8 @@
 		"react-native-screens": "~3.20.0",
 		"react-native-web": "~0.18.10",
 		"react-redux": "7.2.6",
-		"redux-logger": "^3.0.6"
+		"redux-logger": "^3.0.6",
+		"three": "^0.152.2"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.21.8",

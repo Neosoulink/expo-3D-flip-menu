@@ -16,6 +16,7 @@ module.exports = function (api) {
 						'.json',
 						'.ts',
 						'.tsx',
+						'.cjs',
 					],
 					root: ['.'],
 					alias: {
