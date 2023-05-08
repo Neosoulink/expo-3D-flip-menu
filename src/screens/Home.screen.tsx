@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import * as THREE from 'three';
 import { Canvas, CanvasProps } from '@react-three/fiber/native';
 import { Text3D } from '@react-three/drei/native';
@@ -10,11 +10,12 @@ import type { AppStackScreenProps } from '~router/AppStackNavigator';
 
 // COMPONENTS
 import FocusAwareStatusBar from '~components/common/FocusAwareStatusBar';
-// import Guitar from '~components/3d/Guitar';
+import Guitar from '~components/3d/Guitar';
 import Menu from '~components/3d/Menu';
 
 // STYLES
 import { GLOBAL_STYLE as GS } from '../assets/ts/styles';
+import { Text } from 'react-native-paper';
 
 const HomeScreen: React.FC<AppStackScreenProps<'APP_STACK/HOME'>> = ({}) => {
 	// DATA
@@ -23,6 +24,9 @@ const HomeScreen: React.FC<AppStackScreenProps<'APP_STACK/HOME'>> = ({}) => {
 	let side = 0;
 	let isClick = false;
 	let startPosition = 0;
+
+	// STATES
+	const [guitarLoaded, setGuitarLoaded] = React.useState(false);
 
 	// FUNCTIONS
 	const onTouchStart: CanvasProps['onTouchStart'] = _ => {
@@ -67,7 +71,7 @@ const HomeScreen: React.FC<AppStackScreenProps<'APP_STACK/HOME'>> = ({}) => {
 	};
 
 	return (
-		<View style={{ ...GS.screen }}>
+		<View style={STYLES.main}>
 			<FocusAwareStatusBar
 				translucent={true}
 				backgroundColor="transparent"
@@ -115,11 +119,35 @@ const HomeScreen: React.FC<AppStackScreenProps<'APP_STACK/HOME'>> = ({}) => {
 						JA-90
 						<meshBasicMaterial color={'#0D0906'} />
 					</Text3D>
-					{/* <Guitar /> */}
+					<Guitar onModelLoaded={() => setGuitarLoaded(true)} />
 				</group>
 			</Canvas>
+
+			{!guitarLoaded && (
+				<View
+					style={{
+						...GS.positionAbsolute,
+						...GS.h100,
+						...GS.w100,
+						...GS.zIndexFront,
+						...GS.bgPrimary,
+						...GS.centeredItems,
+					}}>
+					<Text style={{ ...GS.FF_NunitoBold, ...GS.txtXlg, ...GS.txtCenter }}>
+						Loading models...
+					</Text>
+				</View>
+			)}
 		</View>
 	);
 };
+
+// LOCAL STYLES
+const STYLES = StyleSheet.create({
+	main: {
+		...GS.screen,
+		backgroundColor: '#ACA598',
+	},
+});
 
 export default HomeScreen;
