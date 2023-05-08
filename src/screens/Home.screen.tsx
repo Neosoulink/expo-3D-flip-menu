@@ -29,14 +29,18 @@ import {
 
 const HomeScreen: React.FC<AppStackScreenProps<'APP_STACK/HOME'>> = ({}) => {
 	// DATA
-	const groupRef = React.useRef<THREE.Group | null>(null);
-	let test = false;
-	let side = 0;
-	let isClick = false;
-	let startPosition = 0;
+	const MENU_ITEMS = ['Guitars', 'Basses', 'Amps', 'Pedals', 'Others'];
+	const SUB_MENU_ITEMS = ['About', 'Support', 'Terms', 'Faqs'];
 
 	// STATES
+	const [menuConfig] = React.useState({
+		test: false,
+		side: 0,
+		isClick: false,
+		startPosition: 0,
+	});
 	const [guitarLoaded, setGuitarLoaded] = React.useState(false);
+	const [selectedMenuItem, setSelectedMenuItem] = React.useState(0);
 	const MENU_ROTATION_DEG = useSharedValue(90);
 
 	// ANIMATED
@@ -46,36 +50,45 @@ const HomeScreen: React.FC<AppStackScreenProps<'APP_STACK/HOME'>> = ({}) => {
 		};
 	});
 
+	// REFS
+	const groupRef = React.useRef<THREE.Group | null>(null);
+
 	// FUNCTIONS
 	const onTouchStart: CanvasProps['onTouchStart'] = _ => {
-		isClick = true;
-		startPosition = _.nativeEvent.locationX;
+		menuConfig.isClick = true;
+		menuConfig.startPosition = _.nativeEvent.locationX;
 	};
 
 	const onTouchEnd: CanvasProps['onTouchEnd'] = _ => {
-		isClick = false;
-		startPosition = 0;
+		menuConfig.isClick = false;
+		menuConfig.startPosition = 0;
 	};
 
 	const onTouchMove: CanvasProps['onTouchMove'] = event => {
-		if (!isClick) {
+		if (!menuConfig.isClick) {
 			return;
 		}
-		if (!side && event.nativeEvent.pageX - startPosition > 30) {
+		if (
+			!menuConfig.side &&
+			event.nativeEvent.pageX - menuConfig.startPosition > 30
+		) {
 			eventHandler();
 		}
-		if (side && event.nativeEvent.pageX - startPosition < -30) {
+		if (
+			menuConfig.side &&
+			event.nativeEvent.pageX - menuConfig.startPosition < -30
+		) {
 			eventHandler();
 		}
 		event.stopPropagation();
 	};
 
 	const eventHandler = () => {
-		if (test) {
+		if (menuConfig.test) {
 			return;
 		}
-		side = (side + 1) % 2;
-		test = true;
+		menuConfig.side = (menuConfig.side + 1) % 2;
+		menuConfig.test = true;
 
 		if (groupRef.current?.rotation.y === 0) {
 			setTimeout(() => {
@@ -96,8 +109,8 @@ const HomeScreen: React.FC<AppStackScreenProps<'APP_STACK/HOME'>> = ({}) => {
 			y: groupRef.current?.rotation.y === 0 ? Math.PI / 2 : 0,
 			ease: 'power1.inOut',
 			onComplete: () => {
-				test = false;
-				isClick = false;
+				menuConfig.test = false;
+				menuConfig.isClick = false;
 			},
 		});
 	};
@@ -161,22 +174,44 @@ const HomeScreen: React.FC<AppStackScreenProps<'APP_STACK/HOME'>> = ({}) => {
 					STYLES.menuItemsWrapper,
 					MENU_ITEMS_ANIMATED_STYLES,
 				]}>
-				<View style={STYLES.menuItemsContainer}>
-					<TouchableOpacity onPress={() => {}}>
-						<Text>dsadasdasdasdas</Text>
-					</TouchableOpacity>
-					<Text>fdfsfasfasdfsdf1</Text>
-					<Text>fdfsfasfasdfsdf1</Text>
-					<Text>fdfsfasfasdfsdf1</Text>
+				<View
+					style={{
+						...STYLES.menuItemsContainer,
+						marginBottom: CS.WINDOW_HEIGHT * 0.14,
+					}}>
+					{MENU_ITEMS.map((item, index) => (
+						<TouchableOpacity
+							key={index}
+							onPress={() => setSelectedMenuItem(index)}>
+							<Text
+								style={{
+									...STYLES.menuItem,
+									...(selectedMenuItem === index ? GS.txtDanger : {}),
+								}}>
+								{item}
+							</Text>
+						</TouchableOpacity>
+					))}
 				</View>
-				<View style={{ ...GS.py5 }} />
+
+				<View style={STYLES.menuItemsContainer}>
+					{SUB_MENU_ITEMS.map((item, index) => (
+						<TouchableOpacity key={index}>
+							<Text
+								style={{
+									...STYLES.subMenuItem,
+								}}>
+								{item}
+							</Text>
+						</TouchableOpacity>
+					))}
+				</View>
 			</Animated.View>
 
 			{!guitarLoaded && (
 				<View
 					style={{
 						...STYLES.overLay,
-
 						...GS.zIndexFront,
 						...GS.bgPrimary,
 						...GS.centeredItems,
@@ -209,15 +244,26 @@ const STYLES = StyleSheet.create({
 		...GS.w100,
 	},
 	menuItemsWrapper: {
-		...GS.justifyCenter,
 		...GS.h100,
 		top: 0,
 		width: 30,
-		...GS.bgDanger,
+		paddingTop: CS.WINDOW_HEIGHT * 0.34,
 	},
 	menuItemsContainer: {
-		...GS.bgSuccess,
-		minWidth: CS.WINDOW_WIDTH * 0.8,
+		paddingLeft: CS.SPACE_XLG * 1.28,
+		minWidth: CS.WINDOW_WIDTH * 0.55,
+	},
+	menuItem: {
+		...GS.FF_MontserratBold,
+		...GS.mb3,
+		...GS.txtUpper,
+		fontSize: CS.FONT_SIZE_XLG * 1.25,
+	},
+	subMenuItem: {
+		...GS.FF_MontserratBold,
+		...GS.mb3,
+		...GS.txtMd,
+		...GS.txtUpper,
 	},
 });
 
