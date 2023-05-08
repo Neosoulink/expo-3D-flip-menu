@@ -35,7 +35,7 @@ export const CONSTANT_COLOR = {
 	mutedHighLight: '#dce3f4',
 
 	light: '#fcfdff',
-	dark: '#0C2146',
+	dark: '#393631',
 	info: '#2979FF',
 	success: '#43A047',
 	danger: '#8A3325',

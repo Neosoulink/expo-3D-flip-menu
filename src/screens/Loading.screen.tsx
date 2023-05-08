@@ -16,6 +16,6 @@ export default ({}) => (
 			backgroundColor="transparent"
 		/>
 
-		<ActivityIndicator size="large" color={CC.danger} />
+		<ActivityIndicator size="small" color={CC.danger} />
 	</View>
 );

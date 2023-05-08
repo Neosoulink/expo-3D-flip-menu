@@ -26,6 +26,7 @@ import {
 	CONSTANT_SIZE as CS,
 	GLOBAL_STYLE as GS,
 } from '../assets/ts/styles';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const HomeScreen: React.FC<AppStackScreenProps<'APP_STACK/HOME'>> = ({}) => {
 	// DATA
@@ -42,11 +43,17 @@ const HomeScreen: React.FC<AppStackScreenProps<'APP_STACK/HOME'>> = ({}) => {
 	const [guitarLoaded, setGuitarLoaded] = React.useState(false);
 	const [selectedMenuItem, setSelectedMenuItem] = React.useState(0);
 	const MENU_ROTATION_DEG = useSharedValue(90);
+	const MENU_HEADER_TRANSFORM_X = useSharedValue(0);
 
 	// ANIMATED
 	const MENU_ITEMS_ANIMATED_STYLES = useAnimatedStyle(() => {
 		return {
 			transform: [{ rotateY: -MENU_ROTATION_DEG.value + 'deg' }],
+		};
+	});
+	const MENU_HEADER_ANIMATED_STYLES = useAnimatedStyle(() => {
+		return {
+			transform: [{ translateX: MENU_HEADER_TRANSFORM_X.value }],
 		};
 	});
 
@@ -97,9 +104,19 @@ const HomeScreen: React.FC<AppStackScreenProps<'APP_STACK/HOME'>> = ({}) => {
 					easing: Easing.bezier(0.5, 0, 0.5, 1),
 				});
 			}, 300);
+
+			MENU_HEADER_TRANSFORM_X.value = withTiming(CS.WINDOW_WIDTH * 0.75, {
+				duration: 850,
+				easing: Easing.bezier(0.5, 0, 0.5, 1),
+			});
 		} else {
 			MENU_ROTATION_DEG.value = withTiming(90, {
 				duration: 550,
+				easing: Easing.bezier(0.5, 0, 0.5, 1),
+			});
+
+			MENU_HEADER_TRANSFORM_X.value = withTiming(0, {
+				duration: 850,
 				easing: Easing.bezier(0.5, 0, 0.5, 1),
 			});
 		}
@@ -208,6 +225,37 @@ const HomeScreen: React.FC<AppStackScreenProps<'APP_STACK/HOME'>> = ({}) => {
 				</View>
 			</Animated.View>
 
+			<Animated.View style={[STYLES.menuHeader, MENU_HEADER_ANIMATED_STYLES]}>
+				<SafeAreaView
+					style={{
+						...GS.positionRelative,
+						...GS.inlinedItems,
+						...GS.justifyCenter,
+					}}>
+					<View style={STYLES.menuHamburger}>
+						<TouchableOpacity onPress={eventHandler}>
+							<>
+								{[...Array(3).keys()].map((_, index) => (
+									<View
+										key={index}
+										style={{
+											...STYLES.menuHamburgerItem,
+											width: Number(
+												index === 2 ? 25 : STYLES.menuHamburgerItem.width,
+											),
+										}}
+									/>
+								))}
+							</>
+						</TouchableOpacity>
+					</View>
+
+					<Text style={{ ...GS.txtUpper, ...GS.FF_MontserratSemiBold }}>
+						Product Details
+					</Text>
+				</SafeAreaView>
+			</Animated.View>
+
 			{!guitarLoaded && (
 				<View
 					style={{
@@ -222,7 +270,7 @@ const HomeScreen: React.FC<AppStackScreenProps<'APP_STACK/HOME'>> = ({}) => {
 							...GS.txtXlg,
 							...GS.txtCenter,
 						}}>
-						<ActivityIndicator size="large" color={CC.danger} />
+						<ActivityIndicator size="small" color={CC.danger} />
 					</Text>
 				</View>
 			)}
@@ -264,6 +312,20 @@ const STYLES = StyleSheet.create({
 		...GS.mb3,
 		...GS.txtMd,
 		...GS.txtUpper,
+	},
+	menuHeader: {
+		...GS.positionAbsolute,
+		...GS.t0,
+		...GS.w100,
+		...GS.pt5,
+		paddingLeft: CS.WINDOW_WIDTH * 0.11,
+	},
+	menuHamburger: { ...GS.positionAbsolute, top: '130%', left: 0 },
+	menuHamburgerItem: {
+		...GS.mb1,
+		backgroundColor: CC.dark,
+		height: 4,
+		width: 30,
 	},
 });
 
