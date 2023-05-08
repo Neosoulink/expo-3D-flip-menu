@@ -24,6 +24,9 @@ export default function useCachedResources(): boolean {
 					'Nunito-SemiBold': require('../assets/fonts/Nunito/Nunito-SemiBold.ttf'),
 					'Nunito-Bold': require('../assets/fonts/Nunito/Nunito-Bold.ttf'),
 					'Nunito-Black': require('../assets/fonts/Nunito/Nunito-Black.ttf'),
+					'Montserrat-Bold': require('../assets/fonts/Montserrat/Montserrat-Bold.ttf'),
+					'Montserrat-SemiBold': require('../assets/fonts/Montserrat/Montserrat-SemiBold.ttf'),
+					'Montserrat-ExtraBold': require('../assets/fonts/Montserrat/Montserrat-ExtraBold.ttf'),
 				});
 			} catch (e) {
 				// We might want to provide this error information to an error reporting service

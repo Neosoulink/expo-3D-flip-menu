@@ -38,7 +38,7 @@ export const CONSTANT_COLOR = {
 	dark: '#0C2146',
 	info: '#2979FF',
 	success: '#43A047',
-	danger: '#F44336',
+	danger: '#8A3325',
 	warning: '#FB8200',
 	white: '#FFFFFF',
 	input: '#edeef2',
@@ -63,6 +63,15 @@ export const GLOBAL_STYLE = StyleSheet.create({
 	},
 	FF_NunitoBlack: {
 		fontFamily: 'Nunito-Black',
+	},
+	FF_MontserratBold: {
+		fontFamily: 'Montserrat-Bold',
+	},
+	FF_MontserratSemiBold: {
+		fontFamily: 'Montserrat-SemiBold',
+	},
+	FF_MontserratExtraBold: {
+		fontFamily: 'Montserrat-ExtraBold',
 	},
 	screen: {
 		flex: 1,
@@ -102,15 +111,12 @@ export const GLOBAL_STYLE = StyleSheet.create({
 		backgroundColor: 'transparent',
 	},
 	txtXlg: {
-		fontFamily: 'Nunito-Bold',
 		fontSize: CONSTANT_SIZE.FONT_SIZE_XLG,
 	},
 	txtLg: {
-		fontFamily: 'Nunito-Bold',
 		fontSize: CONSTANT_SIZE.FONT_SIZE_LG,
 	},
 	txtMd: {
-		fontFamily: 'Nunito-Bold',
 		fontSize: CONSTANT_SIZE.FONT_SIZE_MD,
 	},
 	txtSm: {
