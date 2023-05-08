@@ -24,7 +24,7 @@ export const CONSTANT_SIZE = {
 };
 
 export const CONSTANT_COLOR = {
-	primary: '#F0E7DA',
+	primary: '#F4E4CE',
 	primaryLight: '#fff',
 	primaryHightLight: '#fff',
 	secondary: '#fff',
