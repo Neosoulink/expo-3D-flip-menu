@@ -1,9 +1,16 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import * as THREE from 'three';
 import { Canvas, CanvasProps } from '@react-three/fiber/native';
 import { Text3D } from '@react-three/drei/native';
 import gsap from 'gsap';
+import Animated, {
+	Easing,
+	useAnimatedStyle,
+	useSharedValue,
+	withTiming,
+} from 'react-native-reanimated';
+import { ActivityIndicator, Text } from 'react-native-paper';
 
 // TYPES
 import type { AppStackScreenProps } from '~router/AppStackNavigator';
@@ -14,8 +21,11 @@ import Guitar from '~components/3d/Guitar';
 import Menu from '~components/3d/Menu';
 
 // STYLES
-import { GLOBAL_STYLE as GS } from '../assets/ts/styles';
-import { Text } from 'react-native-paper';
+import {
+	CONSTANT_COLOR as CC,
+	CONSTANT_SIZE as CS,
+	GLOBAL_STYLE as GS,
+} from '../assets/ts/styles';
 
 const HomeScreen: React.FC<AppStackScreenProps<'APP_STACK/HOME'>> = ({}) => {
 	// DATA
@@ -27,6 +37,14 @@ const HomeScreen: React.FC<AppStackScreenProps<'APP_STACK/HOME'>> = ({}) => {
 
 	// STATES
 	const [guitarLoaded, setGuitarLoaded] = React.useState(false);
+	const MENU_ROTATION_DEG = useSharedValue(90);
+
+	// ANIMATED
+	const MENU_ITEMS_ANIMATED_STYLES = useAnimatedStyle(() => {
+		return {
+			transform: [{ rotateY: -MENU_ROTATION_DEG.value + 'deg' }],
+		};
+	});
 
 	// FUNCTIONS
 	const onTouchStart: CanvasProps['onTouchStart'] = _ => {
@@ -58,6 +76,20 @@ const HomeScreen: React.FC<AppStackScreenProps<'APP_STACK/HOME'>> = ({}) => {
 		}
 		side = (side + 1) % 2;
 		test = true;
+
+		if (groupRef.current?.rotation.y === 0) {
+			setTimeout(() => {
+				MENU_ROTATION_DEG.value = withTiming(0, {
+					duration: 550,
+					easing: Easing.bezier(0.5, 0, 0.5, 1),
+				});
+			}, 300);
+		} else {
+			MENU_ROTATION_DEG.value = withTiming(90, {
+				duration: 550,
+				easing: Easing.bezier(0.5, 0, 0.5, 1),
+			});
+		}
 
 		gsap.to(groupRef.current?.rotation ?? {}, {
 			duration: 0.85,
@@ -123,18 +155,39 @@ const HomeScreen: React.FC<AppStackScreenProps<'APP_STACK/HOME'>> = ({}) => {
 				</group>
 			</Canvas>
 
+			<Animated.View
+				style={[
+					STYLES.overLay,
+					STYLES.menuItemsWrapper,
+					MENU_ITEMS_ANIMATED_STYLES,
+				]}>
+				<View style={STYLES.menuItemsContainer}>
+					<TouchableOpacity onPress={() => {}}>
+						<Text>dsadasdasdasdas</Text>
+					</TouchableOpacity>
+					<Text>fdfsfasfasdfsdf1</Text>
+					<Text>fdfsfasfasdfsdf1</Text>
+					<Text>fdfsfasfasdfsdf1</Text>
+				</View>
+				<View style={{ ...GS.py5 }} />
+			</Animated.View>
+
 			{!guitarLoaded && (
 				<View
 					style={{
-						...GS.positionAbsolute,
-						...GS.h100,
-						...GS.w100,
+						...STYLES.overLay,
+
 						...GS.zIndexFront,
 						...GS.bgPrimary,
 						...GS.centeredItems,
 					}}>
-					<Text style={{ ...GS.FF_NunitoBold, ...GS.txtXlg, ...GS.txtCenter }}>
-						Loading models...
+					<Text
+						style={{
+							...GS.FF_NunitoBold,
+							...GS.txtXlg,
+							...GS.txtCenter,
+						}}>
+						<ActivityIndicator size="large" color={CC.danger} />
 					</Text>
 				</View>
 			)}
@@ -147,6 +200,24 @@ const STYLES = StyleSheet.create({
 	main: {
 		...GS.screen,
 		backgroundColor: '#ACA598',
+	},
+	overLay: {
+		...GS.positionAbsolute,
+		...GS.l0,
+		...GS.t0,
+		...GS.h100,
+		...GS.w100,
+	},
+	menuItemsWrapper: {
+		...GS.justifyCenter,
+		...GS.h100,
+		top: 0,
+		width: 30,
+		...GS.bgDanger,
+	},
+	menuItemsContainer: {
+		...GS.bgSuccess,
+		minWidth: CS.WINDOW_WIDTH * 0.8,
 	},
 });
 
