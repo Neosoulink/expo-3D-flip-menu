@@ -27,7 +27,7 @@ export const PAPER_THEME: PaperThemeType = {
 		...DefaultTheme.colors,
 		primary: CC.info,
 		accent: CC.primaryHightLight,
-		background: CC.white,
+		background: CC.primary,
 		surface: CC.light,
 		onSurface: CC.mutedHighLight,
 		disabled: CC.mutedLight,

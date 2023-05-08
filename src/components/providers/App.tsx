@@ -24,7 +24,7 @@ const AppProvider: React.FC<Props> = props => {
 	React.useEffect(() => {
 		setTimeout(() => {
 			dispatch(setGroup(ROUTES_GROUPS.APP));
-		}, 2000);
+		}, 500);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

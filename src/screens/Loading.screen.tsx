@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
 
 // COMMONS
 import FocusAwareStatusBar from '~components/common/FocusAwareStatusBar';
